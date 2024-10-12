@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, List, ListItem, ListItemText } from '@mui/material';
 import axios from 'axios';
-import {User, Weather} from "../types";
+import { User, Weather } from "../types";
+import ModalWindow from './ModalWindow';
 
 interface UserCardProps {
     user: User;
@@ -61,34 +61,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSave, isSaved = false }) =>
                 </button>
             </div>
 
-            <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-                <DialogTitle style={{ textAlign: 'center', backgroundColor: '#2196F3', color: '#fff' }}>Weather Details</DialogTitle>
-                <DialogContent>
-                    {weather ? (
-                        <div>
-                            <Typography variant="h6" style={{ marginBottom: '10px' }}>
-                                Current Temperature: {weather.current_temperature}°C
-                            </Typography>
-                            <Typography variant="subtitle1" style={{ marginBottom: '10px' }}>Hourly Forecast:</Typography>
-                            <List>
-                                {weather.hourly.time.slice(0, 6).map((time, index) => (
-                                    <ListItem key={index}>
-                                        <ListItemText
-                                            primary={new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            secondary={`${weather.hourly.temperature_2m[index]}°C`}
-                                        />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </div>
-                    ) : (
-                        <Typography>Loading...</Typography>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="secondary">Close</Button>
-                </DialogActions>
-            </Dialog>
+            <ModalWindow open={open} onClose={handleClose} weather={weather} />
         </div>
     );
 };
